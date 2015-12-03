@@ -1,0 +1,17 @@
+proxy:
+  image: identiproxy:0.1
+  links:
+    - identidock
+  ports:
+    - "80:80"
+identidock:
+  image: amouat/identidock:1.0
+  links:
+    - dnmonster
+    - redis
+  environment:
+    ENV: PROD
+dnmonster:
+  image: amouat/dnmonster:1.0
+redis:
+  image: redis:3

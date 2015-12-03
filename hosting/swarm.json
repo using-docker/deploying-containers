@@ -1,0 +1,40 @@
+{
+    "name": "identidock_svc",
+    "components": {
+        "proxy": {
+            "image": "amouat/proxy:1.0",
+            "ports": [80],
+            "env": {
+                "NGINX_HOST": "$domain",
+                "NGINX_PROXY": "http://identidock:9090"
+            },
+            "links": [ {
+                "component": "identidock",
+                "target_port": 9090
+            }],
+            "domains": { "80": "$domain" }
+        },
+        "identidock": {
+            "image": "amouat/identidock:1.0",
+            "ports": [9090],
+            "links": [
+            {
+                "component": "dnmonster",
+                "target_port": 8080
+            },
+            {
+                "component": "redis",
+                "target_port": 6379
+            }
+            ]
+        },
+        "redis": {
+            "image": "redis:3",
+            "ports": [6379]
+        },
+        "dnmonster": {
+            "image": "amouat/dnmonster:1.0",
+            "ports": [8080]
+        }
+    }
+}

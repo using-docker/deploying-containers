@@ -1,0 +1,63 @@
+{
+  "family": "identidock",
+  "containerDefinitions": [
+    {
+      "name": "proxy",
+      "image": "amouat/proxy:1.0",
+      "cpu": 100,
+      "memory": 100,
+      "environment": [
+        {
+          "name": "NGINX_HOST",
+          "value": "www.identidock.com"
+        },
+        {
+          "name": "NGINX_PROXY",
+          "value": "http://identidock:9090"
+        }
+      ],
+      "portMappings": [
+        {
+          "hostPort": 80,
+          "containerPort": 80,
+          "protocol": "tcp"
+        }
+      ],
+      "links": [
+        "identidock"
+      ],
+      "essential": true
+    },
+    {
+      "name": "identidock",
+      "image": "amouat/identidock:1.0",
+      "cpu": 100,
+      "memory": 100,
+      "environment": [
+        {
+          "name": "ENV",
+          "value": "PROD"
+        }
+      ],
+      "links": [
+        "dnmonster",
+        "redis"
+      ],
+      "essential": true
+    },
+    {
+      "name": "dnmonster",
+      "image": "amouat/dnmonster:1.0",
+      "cpu": 100,
+      "memory": 100,
+      "essential": true
+    },
+    {
+      "name": "redis",
+      "image": "redis:3",
+      "cpu": 100,
+      "memory": 100,
+      "essential": false
+    }
+  ]
+}

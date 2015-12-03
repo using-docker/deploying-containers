@@ -1,0 +1,24 @@
+proxy:
+  image: amouat/proxy:1.0
+  links: 
+    - identidock
+  ports:
+   - "80:80"
+  environment:
+    - NGINX_HOST=www.identidock.com
+    - NGINX_PROXY=http://identidock:9090
+  mem_limit: "128M"
+identidock:
+  image: amouat/identidock:1.0
+  links:
+   - dnmonster
+   - redis
+  environment:
+    ENV: PROD
+  mem_limit: "128M"
+dnmonster:
+  image: amouat/dnmonster:1.0
+  mem_limit: "128M"
+redis:
+  image: redis
+  mem_limit: "128M"

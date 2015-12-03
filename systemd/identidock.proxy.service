@@ -1,0 +1,15 @@
+[Unit]
+Description=Redis Container for Identidock
+After=docker.service
+Requires=docker.service
+
+[Service]
+TimeoutStartSec=0
+Restart=always
+ExecStartPre=-/usr/bin/docker stop redis
+ExecStartPre=-/usr/bin/docker rm redis
+ExecStartPre=/usr/bin/docker pull redis
+ExecStart=/usr/bin/docker run --rm --name redis redis
+
+[Install]
+WantedBy=multi-user.target
